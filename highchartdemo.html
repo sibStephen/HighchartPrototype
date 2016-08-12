@@ -55,11 +55,12 @@ $(document).ready(function() {
           xAxis: {
             categories: []
         },
-        series: [{}],
+        series: [[{}],[{}]],
     };
 
     $.getJSON('data.json', function(data) {
-        options.series[0].data = data;
+        options.series[0].data = data[0];
+        options.series[1].data = data[1];
         var chart = new Highcharts.Chart(options);
     });
 

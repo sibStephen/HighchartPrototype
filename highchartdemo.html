@@ -4,67 +4,109 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src= "data.json"></script>
 <script>
-// $(document).ready(function() {
-//     var options = {
-//         chart: {
-//             renderTo: 'container',
-//             type: 'spline'
-//         },
-//         xAxis: {
-//             title: {
-//                 text: ""
-//             }
-//         },
-
-//         series: [[{}],[{}],[{}]]
-//     };
-
-//     $.getJSON("data.json",  function(data) {
-//         var arr = [data];
-//          var ert = [];
-//         var out = [];
-//         var finalized = [];
-//         var processed_json =[];
-//         for (var i = 0; i < arr.length; i++) {
-//             for (var i2 in arr[i]) {
-//                 out.push([arr[i][i2]]);
-//                 console.log(out);
-//             }
-//             for ( var j=0; j < out.length; j++) {
-//                 finalized = [i2,out[j]];
-//                 //console.log( finalized[1][0]);
-//                 for (key in finalized[1][0]) {
-//                     if(key === "completed") {
-//                       ty.push([key]);
-//                     }
-//                     console.log(ty);
-//                 }
-//             }
-//             }
-//         options.series[0].data = data;
-//         var chart = new Highcharts.Chart(options);
-//     });
-// });
 $(document).ready(function() {
-
     var options = {
         chart: {
             renderTo: 'container',
-            type: 'line'
+            type: 'spline'
         },
-          xAxis: {
+      xAxis: {
             categories: []
         },
-        series: [[{}],[{}]],
+
+        series: [[{}],[{}],[{}],[{}]]
     };
 
-    $.getJSON('data.json', function(data) {
-        options.series[0].data = data[0];
-        options.series[1].data = data[1];
+    $.getJSON("data.json",  function(data) {
+        var arr = [data];
+         var key = [];
+        var out = [];
+        var finalized = [];
+        var completed = [];
+        var  inprogress =[];
+        var failed = [];
+        var dropped = [];
+
+        for (var i = 0; i < arr.length; i++) {
+            for (var i2 in arr[i]) {
+                key.push(i2);
+                out.push([arr[i][i2]]);
+            }
+            for ( var j=0; j < out.length; j++) {
+                finalized = [key[j],out[j]];
+                for (var u =0; u < out[j].length; u++) {
+                    completed.push([key[j],out[j][u].completed]);
+                    inprogress.push([key[j],out[j][u].inprogress]);
+                    failed.push([key[j],out[j][u].failed]);
+                    dropped.push([key[j],out[j][u].dropped]);
+
+                }
+            }
+            }
+            console.log(dropped);
+        options.series[0].data = completed;
+        options.series[1].data = inprogress;
+        options.series[2].data = failed;
+        options.series[3].data = dropped;
         var chart = new Highcharts.Chart(options);
     });
+$(".changeMe").click(function() {
+ $.getJSON("data1.json",  function(data) {
+        var arr = [data];
+         var key = [];
+        var out = [];
+        var finalized = [];
+        var completed = [];
+        var  inprogress =[];
+        var failed = [];
+        var dropped = [];
 
+        for (var i = 0; i < arr.length; i++) {
+            for (var i2 in arr[i]) {
+                key.push(i2);
+                out.push([arr[i][i2]]);
+            }
+            for ( var j=0; j < out.length; j++) {
+                finalized = [key[j],out[j]];
+                for (var u =0; u < out[j].length; u++) {
+                    completed.push([key[j],out[j][u].completed]);
+                    inprogress.push([key[j],out[j][u].inprogress]);
+                    failed.push([key[j],out[j][u].failed]);
+                    dropped.push([key[j],out[j][u].dropped]);
+
+                }
+            }
+            }
+            console.log(dropped);
+        options.series[0].data = completed;
+        options.series[1].data = inprogress;
+        options.series[2].data = failed;
+        options.series[3].data = dropped;
+        var chart = new Highcharts.Chart(options);
+    });
 });
+});
+// $(document).ready(function() {
+
+//     var options = {
+//         chart: {
+//             renderTo: 'container',
+//             type: 'line'
+//         },
+//           xAxis: {
+//             categories: []
+//         },
+//         series: [[{}],[{}]],
+//     };
+
+//     $.getJSON('data.json', function(data) {
+//         options.series[0].data = data[0];
+//         options.series[1].data = data[1];
+//         var chart = new Highcharts.Chart(options);
+//     });
+
+// });
 </script>
 <div id="container" style="width:100%; height:400px;"></div>
+<button class="changeMe">change The Chart</button>
 </html>

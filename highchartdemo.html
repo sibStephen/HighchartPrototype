@@ -5,6 +5,8 @@
 <script src= "data.json"></script>
 <script>
     $(document).ready(function() {
+        function jsonData(data) {
+            console.log(data);
             var options = {
                 chart: {
                     renderTo: 'container',
@@ -83,63 +85,18 @@
             optionstwo.series[3].data = dropped;
             var chart = new Highcharts.Chart(optionstwo);
         });
-});
-$(".changeMe").click(function() {
-   $.getJSON("data1.json",  function(data) {
-    var arr = [data];
-    var key = [];
-    var out = [];
-    var finalized = [];
-    var completed = [];
-    var  inprogress =[];
-    var failed = [];
-    var dropped = [];
-
-    for (var i = 0; i < arr.length; i++) {
-        for (var i2 in arr[i]) {
-            key.push(i2);
-            out.push([arr[i][i2]]);
-        }
-        for ( var j=0; j < out.length; j++) {
-            finalized = [key[j],out[j]];
-            for (var u =0; u < out[j].length; u++) {
-                completed.push([key[j],out[j][u].completed]);
-                inprogress.push([key[j],out[j][u].inprogress]);
-                failed.push([key[j],out[j][u].failed]);
-                dropped.push([key[j],out[j][u].dropped]);
-            }
-        }
+}
+//Ajax call
+$.ajax({
+    url: 'https://api.github.com/users/mralexgray/repos',
+    type: 'GET',
+    async: true,
+    dataType: "json",
+    success: function (data) {
+        jsonData(data);
     }
-    options.series[0].data = completed;
-    options.series[1].data = inprogress;
-    optionstwo.series[0].data = '';
-    optionstwo.series[1].data = '';
-    optionstwo.series[2].data = failed;
-    optionstwo.series[3].data = dropped;
-    var chart = new Highcharts.Chart(options);
-    var chart = new Highcharts.Chart(optionstwo);
+  });
 });
-});
-// $(document).ready(function() {
-
-//     var options = {
-//         chart: {
-//             renderTo: 'container',
-//             type: 'line'
-//         },
-//           xAxis: {
-//             categories: []
-//         },
-//         series: [[{}],[{}]],
-//     };
-
-//     $.getJSON('data.json', function(data) {
-//         options.series[0].data = data[0];
-//         options.series[1].data = data[1];
-//         var chart = new Highcharts.Chart(options);
-//     });
-
-// });
 </script>
 <div id="container" class="chart" style="width:100%; height:400px;"></div>
 <div id="two" class="chart" style="width:100%; height:400px;"></div>

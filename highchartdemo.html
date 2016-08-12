@@ -19,11 +19,10 @@ $(document).ready(function() {
 
     $.getJSON("data.json",  function(data) {
         var arr = [data];
-         var key = [];
+        var key = [];
         var out = [];
-        var finalized = [];
         var completed = [];
-        var  inprogress =[];
+        var inprogress =[];
         var failed = [];
         var dropped = [];
 
@@ -42,8 +41,7 @@ $(document).ready(function() {
 
                 }
             }
-            }
-            console.log(dropped);
+        }
         options.series[0].data = completed;
         options.series[1].data = inprogress;
         options.series[2].data = failed;

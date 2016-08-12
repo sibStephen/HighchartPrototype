@@ -46,5 +46,11 @@
                 "inprogress":22,
                 "failed": 11,
                 "dropped": 533
+              },
+          "2016-12-03": {
+                "completed": 34,
+                "inprogress":22,
+                "failed": 11,
+                "dropped": 533
               }
               }

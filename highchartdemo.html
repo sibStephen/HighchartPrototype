@@ -12,6 +12,8 @@
                     renderTo: 'container',
                     type: 'line'
                 },
+                  colors: ['#562F1E', '#AF7F24', '#263249', '#5F7F90', '#D9CDB6'],
+                  name: ['sibu','erd'],
                 xAxis: {
                     categories: []
                 },
@@ -31,7 +33,9 @@
                     key.push(i2);
                     out.push([arr[i][i2]]);
                 }
-                // finding out the inner value  and matching it with the key(date) and storing it in an array individually
+                /*
+                finding out the inner value  and matching it with the key(date) and storing it in an array individually
+                */
                 for ( var j=0; j < out.length; j++) {
                     for (var k =0; k < out[j].length; k++) {
                         completed.push([key[j],out[j][k].completed]);
@@ -43,48 +47,64 @@
             }
             options.series[0].data = completed;
             options.series[1].data = inprogress;
-            var chart = new Highcharts.Chart(options);
+            // On  Chart load update the legends
+            var chart = new Highcharts.Chart(options,function() {
+          $(document).ready(function() {
+             chart.legend.allItems[0].update({name:'validated'});
+            chart.legend.allItems[1].update({name:'available'});
+        });
+      });
         });
 
-    var optionstwo = {
-        chart: {
-            renderTo: 'two',
-            type: 'spline'
-        },
-        xAxis: {
-            categories: []
-        },
-        series: [[{}],[{}],[{}],[{}]]
-    };
-    $.getJSON("data.json",  function(data) {
-        var arr = [data];
-        var key = [];
-        var out = [];
-        var completed = [];
-        var inprogress =[];
-        var failed = [];
-        var dropped = [];
+var optionstwo = {
+    chart: {
+        renderTo: 'two',
+        type: 'spline'
+    },
+    xAxis: {
+        categories: []
+    },
+    series: [[{}],[{}],[{}],[{}]]
+};
+$.getJSON("data.json",  function(data) {
+    var arr = [data];
+    var key = [];
+    var out = [];
+    var completed = [];
+    var inprogress =[];
+    var failed = [];
+    var dropped = [];
 
-            //For retreiving th dates which is a key and storing it in an array
-            for (var i = 0; i < arr.length; i++) {
-                for (var i2 in arr[i]) {
-                    key.push(i2);
-                    out.push([arr[i][i2]]);
-                }
-                // finding out the inner value  and matching it with the key(date) and storing it in an array individually
-                for ( var j=0; j < out.length; j++) {
-                    for (var k =0; k < out[j].length; k++) {
-                        failed.push([key[j],out[j][k].failed]);
-                        dropped.push([key[j],out[j][k].dropped]);
-                    }
-                }
+    /*
+     For retreiving th dates which is a key and storing it in an array
+    */
+    for (var i = 0; i < arr.length; i++) {
+        for (var i2 in arr[i]) {
+            key.push(i2);
+            out.push([arr[i][i2]]);
+        }
+        /*
+         finding out the inner value  and matching it with the key(date) and storing it in an array individually
+        */
+        for ( var j=0; j < out.length; j++) {
+            for (var k =0; k < out[j].length; k++) {
+                failed.push([key[j],out[j][k].failed]);
+                dropped.push([key[j],out[j][k].dropped]);
             }
-            optionstwo.series[0].data = '';
-            optionstwo.series[1].data = '';
-            optionstwo.series[2].data = failed;
-            optionstwo.series[3].data = dropped;
-            var chart = new Highcharts.Chart(optionstwo);
+        }
+    }
+    optionstwo.series[0].data = '';
+    optionstwo.series[1].data = '';
+    optionstwo.series[2].data = failed;
+    optionstwo.series[3].data = dropped;
+    // On  Chart load update the legends
+    var chart = new Highcharts.Chart(optionstwo,function() {
+        $(document).ready(function() {
+             chart.legend.allItems[2].update({name:'product'});
+            chart.legend.allItems[3].update({name:'completed'});
         });
+    });
+});
 }
 //Ajax call
 $.ajax({
@@ -95,7 +115,7 @@ $.ajax({
     success: function (data) {
         jsonData(data);
     }
-  });
+});
 });
 </script>
 <div id="container" class="chart" style="width:100%; height:400px;"></div>
